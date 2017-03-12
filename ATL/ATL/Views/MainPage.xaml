@@ -5,7 +5,18 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="ATL.Views.MainPage"
              Title="MainPage">
-  <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+  <StackLayout HorizontalOptions="Center" VerticalOptions="Start">
     <Label Text="{Binding Title}" />
-  </StackLayout>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+            <Button 
+                Text="SA開始"
+                Command="{Binding StartSACommand}" />
+            <Button
+                Text="SA終了"
+                Command="{Binding EndSACommand}" />
+            <Button
+                Text="一覧表示"
+                Command="{Binding ListViewCommand}" />
+        </StackLayout>
+    </StackLayout>
 </ContentPage>
