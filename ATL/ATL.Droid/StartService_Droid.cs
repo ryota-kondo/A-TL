@@ -17,14 +17,18 @@ namespace ATL.Droid
 {
     class StartService_Droid : IStartService
     {
+        private static readonly Context _Context = Forms.Context;
+
+        private readonly Intent _intent = new Intent(_Context, typeof(AggregateService));
+
         public void StartService()
         {
-            Toast.MakeText(Forms.Context,"StartService",ToastLength.Short).Show();
+            _Context.StartService(_intent);
         }
 
         public void StopService()
         {
-            Toast.MakeText(Forms.Context, "StopService", ToastLength.Short).Show();
+            _Context.StopService(_intent);
         }
     }
 }
