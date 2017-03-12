@@ -50,7 +50,7 @@ namespace ATL.Droid
             navigate = new Notification.Builder(context)
                 .SetContentTitle("A-TL")
                 .SetSmallIcon(Resource.Drawable.icon)
-                .SetContentText("test")
+                .SetContentText("アプリの使用状況を計測中です。")
                 .SetOngoing(true) //常駐させる
                 .SetContentIntent(pendingIntent)
                 .Build();

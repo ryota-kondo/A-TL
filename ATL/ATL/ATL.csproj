@@ -38,6 +38,8 @@
     <Compile Include="Helpers\IAllPageModel.cs" />
     <Compile Include="Helpers\IStartService.cs" />
     <Compile Include="Models\AllPageModel.cs" />
+    <Compile Include="Models\ExcecuteTimes.cs" />
+    <Compile Include="Models\SettingData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
   </ItemGroup>
