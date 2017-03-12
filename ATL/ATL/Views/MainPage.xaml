@@ -13,7 +13,7 @@
                 Command="{Binding StartSACommand}" />
             <Button
                 Text="SA終了"
-                Command="{Binding EndSACommand}" />
+                Command="{Binding StopSACommand}" />
             <Button
                 Text="一覧表示"
                 Command="{Binding ListViewCommand}" />

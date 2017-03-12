@@ -8,6 +8,7 @@ using Android.Widget;
 using Android.OS;
 using Prism.Unity;
 using Microsoft.Practices.Unity;
+using ATL.Helpers;
 
 namespace ATL.Droid
 {
@@ -30,7 +31,7 @@ namespace ATL.Droid
     {
         public void RegisterTypes(IUnityContainer container)
         {
-
+            container.RegisterType<IStartService, StartService_Droid>(new ContainerControlledLifetimeManager());
         }
     }
 }

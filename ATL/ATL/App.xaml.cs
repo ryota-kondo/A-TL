@@ -1,5 +1,8 @@
 ﻿using Prism.Unity;
 using ATL.Views;
+using ATL.Helpers;
+using ATL.Models;
+using Microsoft.Practices.Unity;
 
 namespace ATL
 {
@@ -17,6 +20,8 @@ namespace ATL
         protected override void RegisterTypes()
         {
             Container.RegisterTypeForNavigation<MainPage>();
+
+            Container.RegisterType<IAllPageModel, AllPageModel>(new ContainerControlledLifetimeManager());
         }
     }
 }
