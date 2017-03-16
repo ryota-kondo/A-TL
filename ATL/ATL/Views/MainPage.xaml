@@ -18,5 +18,9 @@
                 Text="一覧表示"
                 Command="{Binding ListViewCommand}" />
         </StackLayout>
+        <ScrollView>
+            <Label Text="{Binding TestLabel}"/>
+        </ScrollView>
+
     </StackLayout>
 </ContentPage>

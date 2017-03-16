@@ -36,7 +36,7 @@ namespace ATL.Droid
         public void StopService()
         {
             _Context.StopService(_intent);
-            _Context.StartActivity(new Intent(Settings.ActionUsageAccessSettings));
+            isUsageStatsAllowed();
         }
 
         public void isUsageStatsAllowed()

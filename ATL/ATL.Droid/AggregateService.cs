@@ -18,6 +18,9 @@ using Android.Icu.Util;
 using TimeZone = Android.Icu.Util.TimeZone;
 using System.Timers;
 using System.Threading;
+using System.IO;
+using SQLite;
+using ATL.Helpers;
 
 namespace ATL.Droid
 {
@@ -33,29 +36,24 @@ namespace ATL.Droid
         private bool appKeisokuFlag = false;
         private bool IsStarted() => gStarted;
         private string lastAppName = "";
-        private int ecxecTime;
+        // private int ecxecTime;
+        string startTime, endTime;
 
+        
         private const int MIN_KEISOKU_SECOND = 1;
 
-        List<testDB> list2 = new List<testDB>();
+        // List<t_texecute_times> list2 = new List<t_texecute_times>();
 
         System.Timers.Timer timer = new System.Timers.Timer();
 
-        private struct testDB
-        {
-            public string name;
-            public int time;
+        private static readonly object Locker = new object();
 
-            public testDB (string a,int b)
-            {
-                name = a;
-                time = b;
-            }
-        }
+        private ConnectSqlite_Dorid dbConnect;
 
         public override void OnCreate()
         {
             // Toast.MakeText(this, "onCreate", ToastLength.Short).Show();
+            dbConnect = new ConnectSqlite_Dorid();
         }
 
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
@@ -102,14 +100,14 @@ namespace ATL.Droid
             // タイマーを停止
             timer.Stop();
 
-            var _toastString = "";
-            foreach(var l in list2)
-            {
-                _toastString += $"{l.name} : {l.time} 秒　\n\r";
-            }
+            //var _toastString = "";
+            //foreach(var l in list2)
+            //{
+            //    _toastString += $"{l.app_name} : \n\r {l.startTime} to {l.endTime}\n\r";
+            //}
 
 
-            Toast.MakeText(Forms.Context, _toastString, ToastLength.Long).Show();
+            // Toast.MakeText(Forms.Context, _toastString, ToastLength.Long).Show();
         }
 
         public void OnElapsed_TimersTimer(object sender, ElapsedEventArgs e)
@@ -121,13 +119,13 @@ namespace ATL.Droid
             {
                 if(UsageEventType.MoveToForeground == _event_name) // 計測を継続
                 {
-                    this.ecxecTime += MIN_KEISOKU_SECOND;
+                    // this.ecxecTime += MIN_KEISOKU_SECOND;
                 }
                 else if(UsageEventType.MoveToBackground == _event_name) // 計測終わり
                 {
                     InsertDb();
 
-                    this.ecxecTime = 0;
+                    // this.ecxecTime = 0;
                     this.lastAppName = "";
 
                     appKeisokuFlag = false;
@@ -135,10 +133,10 @@ namespace ATL.Droid
             }
             else
             {
-                // 現在計測中であれば継続
+                // 現在計測中であれば
                 if(appKeisokuFlag)
                 {
-                    this.ecxecTime += MIN_KEISOKU_SECOND;
+                    // this.ecxecTime += MIN_KEISOKU_SECOND;
                 }
 
                 if (UsageEventType.MoveToForeground == _event_name) // 新たに計測開始
@@ -146,15 +144,16 @@ namespace ATL.Droid
                     InsertDb();
 
                     this.lastAppName = _app_name;
-                    this.ecxecTime = 0;
+                    // this.ecxecTime = 0;
 
                     appKeisokuFlag = true;
+                    this.startTime = DateTime.Now.ToString();
                 }
                 else if (UsageEventType.MoveToBackground == _event_name) // 前回の終了が無いけど実質計測終わり
                 {
                     InsertDb();
 
-                    this.ecxecTime = 0;
+                    // this.ecxecTime = 0;
                     this.lastAppName = "";
 
                     appKeisokuFlag = false;
@@ -164,10 +163,16 @@ namespace ATL.Droid
 
         private void InsertDb()
         {
-            if(!(this.lastAppName == "") && !(this.ecxecTime == 0))
+            if(!(this.lastAppName == ""))
             {
-                var temp = new testDB(this.lastAppName, this.ecxecTime);
-                list2.Add(temp);
+                this.endTime = DateTime.Now.ToString();
+
+                var temp = new t_texecute_times { app_name = this.lastAppName,  startTime = this.startTime, endTime = this.endTime };
+                // list2.Add(temp);
+                dbConnect.SaveItem(temp);
+
+                this.startTime = "";
+                this.endTime = "";
             }
         }
 
@@ -208,5 +213,7 @@ namespace ATL.Droid
             }
             return (app_name,event_name);
         }
+
+        
     }
 }

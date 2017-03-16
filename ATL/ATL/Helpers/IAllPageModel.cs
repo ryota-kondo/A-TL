@@ -10,5 +10,8 @@ namespace ATL.Helpers
     public interface IAllPageModel : INotifyPropertyChanged
     {
         IStartService StatService { get; set; }
+        IConnectSqlite ConnectSqlite { get; set; }
+
+        string GetDbString();
     }
 }

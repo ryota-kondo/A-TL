@@ -13,6 +13,13 @@ namespace ATL.ViewModels
     {
         private IAllPageModel _model;
 
+        private string _testLabel;
+        public string TestLabel
+        {
+            get { return _testLabel; }
+            set { this.SetProperty(ref this._testLabel, value); }
+        }
+
         private string _title;
         public string Title
         {
@@ -30,7 +37,7 @@ namespace ATL.ViewModels
 
             StartSACommand = new DelegateCommand(() => _model.StatService.StartService());
             StopSACommand = new DelegateCommand(() => _model.StatService.StopService());
-            ListViewCommand = new DelegateCommand(() => Task.Delay(100));
+            ListViewCommand = new DelegateCommand(() => TestLabel = _model.GetDbString());
         }
 
         public void OnNavigatedFrom(NavigationParameters parameters)
