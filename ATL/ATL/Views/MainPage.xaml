@@ -5,6 +5,12 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="ATL.Views.MainPage"
              Title="MainPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding ToolbarCommand}"
+             Text="ToMenu" />
+    </ContentPage.ToolbarItems>
+
     <StackLayout HorizontalOptions="Center" VerticalOptions="Start">
         <Label Text="{Binding Title}" />
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
