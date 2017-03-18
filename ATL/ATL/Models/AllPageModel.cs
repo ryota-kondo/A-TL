@@ -12,7 +12,6 @@ namespace ATL.Models
     {
         public IStartService StatService { get; set; }
         public IConnectSqlite ConnectSqlite { get; set; }
-        
 
         public AllPageModel(IStartService startService,IConnectSqlite connectSqlite)
         {
@@ -20,15 +19,50 @@ namespace ATL.Models
             this.ConnectSqlite = connectSqlite;
         }
 
-        public string GetDbString()
+        public IEnumerable<AppExeTimeList> GetTodayLists()
         {
-            var a =ConnectSqlite.GetItems();
-            var str = "";
-            foreach(var list in a)
+            var db = ConnectSqlite.GetItems();
+            var appExeTimeLists = new List<AppExeTimeList>();
+
+
+            //AppExeTimeListの形へ型変換しつつ代入
+            foreach (var VARIABLE in db)
             {
-                str += $"{list.id}:{list.app_name} : \n\r {list.startTime} \n\r to \n\r{list.endTime}\n\r\n\r";
+                if (DateTime.Parse(VARIABLE.startTime) > DateTime.Today)
+                {
+                    AppExeTimeList t = new AppExeTimeList();
+
+                    t.app_name = VARIABLE.app_name;
+                    var startTime = DateTime.Parse(VARIABLE.startTime);
+                    var endTime = DateTime.Parse(VARIABLE.endTime);
+
+                    if (DateTime.Parse(VARIABLE.endTime) >= DateTime.Today.AddDays(1))
+                    {
+                        endTime = DateTime.Today.AddDays(1);
+                    }
+
+                    var a = endTime - startTime;
+                    var b = a.Seconds;
+
+                    t.exeTimeSecond = b;
+
+                    appExeTimeLists.Add(t);
+                }
             }
-            return str;
+
+            // アプリ名ごとに合計時間を計測
+            var temp = appExeTimeLists.GroupBy(a => a.app_name);
+            var q = new List<AppExeTimeList>();
+
+            foreach (IGrouping<string,AppExeTimeList> v in temp)
+            {
+                AppExeTimeList t = new AppExeTimeList();
+
+                t.app_name = v.Key;
+                t.exeTimeSecond = v.Sum(a => a.exeTimeSecond);
+                q.Add(t);
+            }
+            return q.OrderByDescending(a => a.exeTimeSecond);
         }
     }
 }

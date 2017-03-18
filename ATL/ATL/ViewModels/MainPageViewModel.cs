@@ -11,13 +11,13 @@ namespace ATL.ViewModels
 {
     public class MainPageViewModel : BindableBase, INavigationAware
     {
-        private IAllPageModel _model;
+        private readonly IAllPageModel _model;
 
-        private string _testLabel;
-        public string TestLabel
+        private IEnumerable<AppExeTimeList> _executeTimes;
+        public IEnumerable<AppExeTimeList> Test1
         {
-            get { return _testLabel; }
-            set { this.SetProperty(ref this._testLabel, value); }
+            get { return _executeTimes; }
+            set { this.SetProperty(ref this._executeTimes, value); }
         }
 
         private string _title;
@@ -37,7 +37,13 @@ namespace ATL.ViewModels
 
             StartSACommand = new DelegateCommand(() => _model.StatService.StartService());
             StopSACommand = new DelegateCommand(() => _model.StatService.StopService());
-            ListViewCommand = new DelegateCommand(() => TestLabel = _model.GetDbString());
+            ListViewCommand = new DelegateCommand(SetList);
+        }
+
+        private void SetList()
+        {
+            var t = _model.GetTodayLists();
+            Test1 = t;
         }
 
         public void OnNavigatedFrom(NavigationParameters parameters)

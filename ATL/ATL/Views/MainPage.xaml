@@ -5,8 +5,8 @@
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="ATL.Views.MainPage"
              Title="MainPage">
-  <StackLayout HorizontalOptions="Center" VerticalOptions="Start">
-    <Label Text="{Binding Title}" />
+    <StackLayout HorizontalOptions="Center" VerticalOptions="Start">
+        <Label Text="{Binding Title}" />
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
             <Button 
                 Text="SA開始"
@@ -19,7 +19,18 @@
                 Command="{Binding ListViewCommand}" />
         </StackLayout>
         <ScrollView>
-            <Label Text="{Binding TestLabel}"/>
+            <ListView ItemsSource="{Binding Test1}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical">
+                                <Label Text="{Binding app_name}" />
+                                <Label Text="{Binding exeTimeSecond}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </ScrollView>
 
     </StackLayout>

@@ -35,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Helpers\AppExeTimecs.cs" />
     <Compile Include="Helpers\IAllPageModel.cs" />
     <Compile Include="Helpers\IConnectSqlite.cs" />
     <Compile Include="Helpers\IStartService.cs" />
