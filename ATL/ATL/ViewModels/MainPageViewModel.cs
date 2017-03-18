@@ -28,17 +28,24 @@ namespace ATL.ViewModels
             set { SetProperty(ref _title, value); }
         }
 
+        public DelegateCommand ToolbarCommand { get; private set; }
         public DelegateCommand StartSACommand { get; private set; }
         public DelegateCommand StopSACommand { get; private set; }
         public DelegateCommand ListViewCommand { get; private set; }
 
-        public MainPageViewModel(IAllPageModel model)
+        public MainPageViewModel(IAllPageModel model, INavigationService navigationService)
         {
             this._model = model;
 
+            ToolbarCommand = new DelegateCommand(() => navigationService.NavigateAsync("MenuPage"));
             StartSACommand = new DelegateCommand(() => _model.StatService.StartService());
             StopSACommand = new DelegateCommand(() => _model.StatService.StopService());
             ListViewCommand = new DelegateCommand(SetList);
+        }
+
+        private void ToMenuPage()
+        {
+            
         }
 
         private void SetList()

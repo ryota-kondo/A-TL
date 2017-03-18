@@ -54,12 +54,11 @@ namespace ATL.Droid
             }
         }
 
-        public int DeleteItem(t_texecute_times item)
+        public void DeleteItem()
         {
             lock (Locker)
             {
-                _db.Delete(item);
-                return item.id;
+                _db.DeleteAll<t_texecute_times>();
             }
         }
     }

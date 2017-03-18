@@ -25,6 +25,7 @@ namespace ATL
             Container.RegisterTypeForNavigation<MainPage>();
 
             Container.RegisterType<IAllPageModel, AllPageModel>(new ContainerControlledLifetimeManager());
+            Container.RegisterTypeForNavigation<MenuPage>();
         }
     }
 }

@@ -15,6 +15,6 @@ namespace ATL.Helpers
 
         int SaveItem(t_texecute_times item);
 
-        int DeleteItem(t_texecute_times item);
+        void DeleteItem();
     }
 }
