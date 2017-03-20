@@ -60,7 +60,7 @@ namespace ATL.Models
             var temp = appExeTimeLists.GroupBy(a => a.app_name);
             var q = new List<AppNameAndExecTime>();
 
-            foreach (IGrouping<string,AppNameAndExecTimeTemp> v in temp)
+            foreach (IGrouping<string, AppNameAndExecTimeTemp> v in temp)
             {
                 AppNameAndExecTime t = new AppNameAndExecTime();
 
@@ -71,7 +71,7 @@ namespace ATL.Models
 
                 var second = v.Sum(a => a.exeTimeSecond);
                 var ts = new TimeSpan(0, 0, second);
-                t.exeTimeSecond = $"実行時間　: {ts}";
+                t.exeTimeSecond = ts.ToString();
 
                 q.Add(t);
             }

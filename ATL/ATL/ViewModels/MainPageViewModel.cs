@@ -21,6 +21,14 @@ namespace ATL.ViewModels
             set { this.SetProperty(ref this._executeTimes, value); }
         }
 
+        private bool isBusy;
+        public bool IsBusy
+        {
+            get { return this.isBusy; }
+            set { this.SetProperty(ref this.isBusy, value); }
+        }
+
+
         private bool _startFlag = false;
 
         public DelegateCommand ToolbarCommand { get; private set; }
@@ -56,10 +64,19 @@ namespace ATL.ViewModels
         /// <summary>
         /// 集計した情報を一覧表示
         /// </summary>
-        private void SetList()
+        private async void SetList()
         {
-            var t = _model.GetTodayLists();
-            ExecuteTimesList = t;
+            try
+            {
+                this.IsBusy = true;
+                await Task.Delay(1000);
+                var t = _model.GetTodayLists();
+                ExecuteTimesList = t;
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
         }
 
         public void OnNavigatedFrom(NavigationParameters parameters)
