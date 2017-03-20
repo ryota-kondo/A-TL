@@ -4,25 +4,25 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="ATL.Views.MainPage"
-             Title="MainPage">
+             Title="A-TL">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding ToolbarCommand}"
+        <ToolbarItem 
+            Command="{Binding ListViewCommand}"
+            Text="更新" 
+            />
+        <ToolbarItem 
+            Command="{Binding ToolbarOnOffCommand}"
+            Text="On/OFF" 
+            />
+        <ToolbarItem
+            Command="{Binding ToolbarCommand}"
              Text="ToMenu" />
     </ContentPage.ToolbarItems>
 
     <StackLayout HorizontalOptions="Center" VerticalOptions="Start">
-        <Label Text="{Binding Title}" />
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
-            <Button 
-                Text="SA開始"
-                Command="{Binding StartSACommand}" />
-            <Button
-                Text="SA終了"
-                Command="{Binding StopSACommand}" />
-            <Button
-                Text="一覧表示"
-                Command="{Binding ListViewCommand}" />
+
         </StackLayout>
         <ScrollView>
             <ListView ItemsSource="{Binding Test1}">
@@ -41,6 +41,5 @@
                 </ListView.ItemTemplate>
             </ListView>
         </ScrollView>
-
     </StackLayout>
 </ContentPage>

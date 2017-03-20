@@ -28,9 +28,10 @@ namespace ATL.ViewModels
             set { SetProperty(ref _title, value); }
         }
 
+        private bool _startFlag = false;
+
         public DelegateCommand ToolbarCommand { get; private set; }
-        public DelegateCommand StartSACommand { get; private set; }
-        public DelegateCommand StopSACommand { get; private set; }
+        public DelegateCommand ToolbarOnOffCommand { get; private set; }
         public DelegateCommand ListViewCommand { get; private set; }
 
         public MainPageViewModel(IAllPageModel model, INavigationService navigationService)
@@ -38,14 +39,22 @@ namespace ATL.ViewModels
             this._model = model;
 
             ToolbarCommand = new DelegateCommand(() => navigationService.NavigateAsync("MenuPage"));
-            StartSACommand = new DelegateCommand(() => _model.StatService.StartService());
-            StopSACommand = new DelegateCommand(() => _model.StatService.StopService());
+            ToolbarOnOffCommand = new DelegateCommand(() => StartStop());
             ListViewCommand = new DelegateCommand(SetList);
         }
 
-        private void ToMenuPage()
+        private void StartStop()
         {
-            
+            if (!_startFlag)
+            {
+                _startFlag = true;
+                _model.StatService.StartService();
+            }
+            else
+            {
+                _startFlag = false;
+                _model.StatService.StopService();
+            }
         }
 
         private void SetList()
@@ -61,8 +70,7 @@ namespace ATL.ViewModels
 
         public void OnNavigatedTo(NavigationParameters parameters)
         {
-            if (parameters.ContainsKey("title"))
-                Title = (string)parameters["title"] + " and Prism";
+            SetList();
         }
     }
 }
