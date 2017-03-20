@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="ATL.Views.MonthPage"
+             Title="今月">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Command="{Binding ListViewCommand}"
+            Text="更新" 
+            />
+        <ToolbarItem 
+            Command="{Binding ToolbarOnOffCommand}"
+            Text="{Binding ONandOFFtext}" 
+            />
+        <ToolbarItem
+            Command="{Binding ToolbarCommand}"
+             Text="設定" />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <Grid>
+            <ListView ItemsSource="{Binding ExecuteTimesList}" Margin="10,5,0,0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ImageCell Text="{Binding app_name}" Detail="{Binding exeTimeSecond, StringFormat='実行時間：{0}'}" ImageSource="{Binding icon_url}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" Scale="0.3" />
+        </Grid>
+    </ScrollView>
+
+</ContentPage>

@@ -17,5 +17,9 @@ namespace ATL.Helpers
         ISaveAndLoad SaveAndLoad { get; set; }
 
         IEnumerable<AppNameAndExecTime> GetTodayLists();
+        IEnumerable<AppNameAndExecTime> GetYesterdayLists();
+        IEnumerable<AppNameAndExecTime> GetWeekLists();
+        IEnumerable<AppNameAndExecTime> GetMonthLists();
+        IEnumerable<AppNameAndExecTime> GetAlldataLists();
     }
 }

@@ -44,11 +44,35 @@
     <Compile Include="Helpers\t_texecute_times.cs" />
     <Compile Include="Models\AllPageModel.cs" />
     <Compile Include="Helpers\SettingData.cs" />
+    <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AllDataPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
-    <Compile Include="ViewModels\MenuPageViewModel.cs" />
+    <Compile Include="ViewModels\MasterDetailMainPageViewModel.cs" />
+    <Compile Include="ViewModels\MonthPageViewModel.cs" />
+    <Compile Include="ViewModels\SettingPageViewModel.cs" />
+    <Compile Include="ViewModels\WeekPageViewModel.cs" />
+    <Compile Include="ViewModels\YesterdayPageViewModel.cs" />
+    <Compile Include="Views\AllDataPage.xaml.cs">
+      <DependentUpon>AllDataPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MasterDetailMainPage.xaml.cs">
+      <DependentUpon>MasterDetailMainPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MenuPage.xaml.cs">
       <DependentUpon>MenuPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MonthPage.xaml.cs">
+      <DependentUpon>MonthPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingPage.xaml.cs">
+      <DependentUpon>SettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WeekPage.xaml.cs">
+      <DependentUpon>WeekPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\YesterdayPage.xaml.cs">
+      <DependentUpon>YesterdayPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +142,42 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\MenuPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\MasterDetailMainPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SettingPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\MonthPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\YesterdayPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\WeekPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\AllDataPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace ATL.Models
 {
+    /// <summary>
+    /// 前ページに適用するModel
+    /// </summary>
     class AllPageModel : BindableBase, IAllPageModel
     {
         public IStartService StatService { get; set; }
@@ -15,7 +18,7 @@ namespace ATL.Models
         public ISaveAndLoad SaveAndLoad { get; set; }
         public IGetApplicationIconAndName GetApplicationIconAndName { get; set; }
 
-        public AllPageModel(IStartService startService,IConnectSqlite connectSqlite,IGetApplicationIconAndName getApplicationIconAndName,ISaveAndLoad saveAndLoad)
+        public AllPageModel(IStartService startService, IConnectSqlite connectSqlite, IGetApplicationIconAndName getApplicationIconAndName, ISaveAndLoad saveAndLoad)
         {
             this.StatService = startService;
             this.ConnectSqlite = connectSqlite;
@@ -23,46 +26,14 @@ namespace ATL.Models
             this.GetApplicationIconAndName = getApplicationIconAndName;
         }
 
-        /// <summary>
-        /// 当日のアプリ実行時間のリストをIEnumerable<AppNameAndExecTime>で返す
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<AppNameAndExecTime> GetTodayLists()
+
+        private IEnumerable<AppNameAndExecTime> ConvartTimeList(IEnumerable<AppNameAndExecTimeTemp> appExeTimeLists)
         {
-            var db = ConnectSqlite.GetItems();
-            var appExeTimeLists = new List<AppNameAndExecTimeTemp>();
-
-
-            //AppExeTimeListの形へ型変換しつつ代入
-            foreach (var VARIABLE in db)
-            {
-                if (DateTime.Parse(VARIABLE.startTime) > DateTime.Today)
-                {
-                    AppNameAndExecTimeTemp t = new AppNameAndExecTimeTemp();
-
-                    t.app_name = VARIABLE.app_name;
-                    var startTime = DateTime.Parse(VARIABLE.startTime);
-                    var endTime = DateTime.Parse(VARIABLE.endTime);
-
-                    if (DateTime.Parse(VARIABLE.endTime) >= DateTime.Today.AddDays(1))
-                    {
-                        endTime = DateTime.Today.AddDays(1);
-                    }
-
-                    var a = endTime - startTime;
-                    var b = a.Seconds;
-
-                    t.exeTimeSecond = b;
-
-                    appExeTimeLists.Add(t);
-                }
-            }
-
             // アプリ名ごとに合計時間を計測
-            var temp = appExeTimeLists.GroupBy(a => a.app_name);
-            var q = new List<AppNameAndExecTime>();
+            var appNameGroup = appExeTimeLists.GroupBy(a => a.app_name);
+            var appNameAndExecTime = new List<AppNameAndExecTime>();
 
-            foreach (IGrouping<string, AppNameAndExecTimeTemp> v in temp)
+            foreach (IGrouping<string, AppNameAndExecTimeTemp> v in appNameGroup)
             {
                 AppNameAndExecTime t = new AppNameAndExecTime();
 
@@ -75,9 +46,183 @@ namespace ATL.Models
                 var ts = new TimeSpan(0, 0, second);
                 t.exeTimeSecond = ts.ToString();
 
-                q.Add(t);
+                appNameAndExecTime.Add(t);
             }
-            return q.OrderByDescending(a => a.exeTimeSecond);
+            return appNameAndExecTime.OrderByDescending(a => a.exeTimeSecond);
+        }
+
+        /// <summary>
+        /// 当日のアプリ実行時間のリストをIEnumerable<AppNameAndExecTime>で返す
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<AppNameAndExecTime> GetTodayLists()
+        {
+            var db = ConnectSqlite.GetItems();
+            var appExeTimeLists = new List<AppNameAndExecTimeTemp>();
+
+            // t_texecute_times をAppNameAndExecTimeTemp へ変換
+            foreach (var tTexecuteTimes in db)
+            {
+                // 集計期間で絞込
+                if (DateTime.Parse(tTexecuteTimes.startTime) >= DateTime.Today)
+                {
+                    AppNameAndExecTimeTemp t = new AppNameAndExecTimeTemp();
+
+                    t.app_name = tTexecuteTimes.app_name;
+                    var startTime = DateTime.Parse(tTexecuteTimes.startTime);
+                    var endTime = DateTime.Parse(tTexecuteTimes.endTime);
+
+                    var a = endTime - startTime;
+                    var b = a.Seconds;
+
+                    t.exeTimeSecond = b;
+
+                    appExeTimeLists.Add(t);
+                }
+            }
+            return ConvartTimeList(appExeTimeLists);
+        }
+
+        /// <summary>
+        /// 昨日のアプリ実行時間のリストをIEnumerable<AppNameAndExecTime>で返す
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<AppNameAndExecTime> GetYesterdayLists()
+        {
+            var db = ConnectSqlite.GetItems();
+            var appExeTimeLists = new List<AppNameAndExecTimeTemp>();
+
+            // t_texecute_times をAppNameAndExecTimeTemp へ変換
+            foreach (var tTexecuteTimes in db)
+            {
+                // 集計期間で絞込
+                if (DateTime.Parse(tTexecuteTimes.startTime) > DateTime.Today.AddDays(-1) && DateTime.Parse(tTexecuteTimes.startTime) < DateTime.Today)
+                {
+                    AppNameAndExecTimeTemp t = new AppNameAndExecTimeTemp();
+
+                    t.app_name = tTexecuteTimes.app_name;
+                    var startTime = DateTime.Parse(tTexecuteTimes.startTime);
+                    var endTime = DateTime.Parse(tTexecuteTimes.endTime);
+
+                    if (DateTime.Parse(tTexecuteTimes.endTime) >= DateTime.Today)
+                    {
+                        endTime = DateTime.Today;
+                    }
+
+                    var a = endTime - startTime;
+                    var b = a.Seconds;
+
+                    t.exeTimeSecond = b;
+
+                    appExeTimeLists.Add(t);
+                }
+            }
+            return ConvartTimeList(appExeTimeLists);
+        }
+
+        /// <summary>
+        /// 過去1週刊のアプリ実行時間のリストをIEnumerable<AppNameAndExecTime>で返す
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<AppNameAndExecTime> GetWeekLists()
+        {
+            var db = ConnectSqlite.GetItems();
+            var appExeTimeLists = new List<AppNameAndExecTimeTemp>();
+
+            // t_texecute_times をAppNameAndExecTimeTemp へ変換
+            foreach (var tTexecuteTimes in db)
+            {
+                // 集計期間で絞込
+                if (DateTime.Parse(tTexecuteTimes.startTime) > DateTime.Today.AddDays(-7))
+                {
+                    AppNameAndExecTimeTemp t = new AppNameAndExecTimeTemp();
+
+                    t.app_name = tTexecuteTimes.app_name;
+                    var startTime = DateTime.Parse(tTexecuteTimes.startTime);
+                    var endTime = DateTime.Parse(tTexecuteTimes.endTime);
+
+                    var a = endTime - startTime;
+                    var b = a.Seconds;
+
+                    t.exeTimeSecond = b;
+
+                    appExeTimeLists.Add(t);
+                }
+            }
+            return ConvartTimeList(appExeTimeLists);
+        }
+
+        /// <summary>
+        /// 今月のアプリ実行時間のリストをIEnumerable<AppNameAndExecTime>で返す
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<AppNameAndExecTime> GetMonthLists()
+        {
+            var db = ConnectSqlite.GetItems();
+            var appExeTimeLists = new List<AppNameAndExecTimeTemp>();
+
+            // t_texecute_times をAppNameAndExecTimeTemp へ変換
+            foreach (var tTexecuteTimes in db)
+            {
+                // 集計期間で絞込
+                if (DateTime.Parse(tTexecuteTimes.startTime).Month == DateTime.Today.Month)
+                {
+                    AppNameAndExecTimeTemp t = new AppNameAndExecTimeTemp();
+
+                    t.app_name = tTexecuteTimes.app_name;
+                    var startTime = DateTime.Parse(tTexecuteTimes.startTime);
+                    var endTime = DateTime.Parse(tTexecuteTimes.endTime);
+
+                    if (DateTime.Parse(tTexecuteTimes.endTime).Month > DateTime.Today.Month)
+                    {
+                        endTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DaysInMonth(DateTime.Today));
+                    }
+
+                    var a = endTime - startTime;
+                    var b = a.Seconds;
+
+                    t.exeTimeSecond = b;
+
+                    appExeTimeLists.Add(t);
+                }
+            }
+            return ConvartTimeList(appExeTimeLists);
+        }
+
+        /// <summary>
+        /// 集計したすべての期間のアプリ実行時間のリストをIEnumerable<AppNameAndExecTime>で返す
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<AppNameAndExecTime> GetAlldataLists()
+        {
+            var db = ConnectSqlite.GetItems();
+            var appExeTimeLists = new List<AppNameAndExecTimeTemp>();
+
+            // t_texecute_times をAppNameAndExecTimeTemp へ変換
+            foreach (var tTexecuteTimes in db)
+            {
+                // 集計期間で絞込
+
+                AppNameAndExecTimeTemp t = new AppNameAndExecTimeTemp();
+
+                t.app_name = tTexecuteTimes.app_name;
+                var startTime = DateTime.Parse(tTexecuteTimes.startTime);
+                var endTime = DateTime.Parse(tTexecuteTimes.endTime);
+
+                var a = endTime - startTime;
+                var b = a.Seconds;
+
+                t.exeTimeSecond = b;
+
+                appExeTimeLists.Add(t);
+
+            }
+            return ConvartTimeList(appExeTimeLists);
+        }
+
+        public static int DaysInMonth(DateTime dt)
+        {
+            return DateTime.DaysInMonth(dt.Year, dt.Month);
         }
     }
 }

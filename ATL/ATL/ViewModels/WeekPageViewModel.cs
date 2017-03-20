@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace ATL.ViewModels
 {
-    public class MainPageViewModel : BindableBase, INavigationAware
+    public class WeekPageViewModel : BindableBase
     {
         private readonly IAllPageModel _model;
         private const string SaveFileName = "setting.json";
@@ -39,13 +39,37 @@ namespace ATL.ViewModels
         public DelegateCommand ToolbarOnOffCommand { get; private set; }
         public DelegateCommand ListViewCommand { get; private set; }
 
-        public MainPageViewModel(IAllPageModel model, INavigationService navigationService)
+        public WeekPageViewModel(IAllPageModel model, INavigationService navigationService)
         {
             this._model = model;
 
             ToolbarCommand = new DelegateCommand(() => navigationService.NavigateAsync("SettingPage"));
             ToolbarOnOffCommand = new DelegateCommand(() => StartStop());
             ListViewCommand = new DelegateCommand(SetList);
+
+            SetList();
+
+            var Flag = false;
+            try
+            {
+                var data = JsonConvert.DeserializeObject<SettingData>(_model.SaveAndLoad.LoadData(SaveFileName));
+                Flag = data.Startup;
+            }
+            catch (Exception e)
+            {
+                var data = JsonConvert.SerializeObject(new SettingData(false));
+                _model.SaveAndLoad.SaveData(SaveFileName, data);
+            }
+
+            if (Flag)
+            {
+                ONandOFFtext = "ON";
+                _model.StatService.StartService();
+            }
+            else
+            {
+                ONandOFFtext = "OFF";
+            }
         }
 
         /// <summary>
@@ -91,7 +115,9 @@ namespace ATL.ViewModels
             {
                 this.IsBusy = true;
                 await Task.Delay(1000);
-                var t = _model.GetTodayLists();
+                // ---------------------------ここが集計時期ごとに違う
+                var t = _model.GetWeekLists();
+                // ここが集計時期ごとに違う-----------------------------
                 ExecuteTimesList = t;
             }
             finally
@@ -107,29 +133,7 @@ namespace ATL.ViewModels
 
         public void OnNavigatedTo(NavigationParameters parameters)
         {
-            SetList();
-
-            var Flag = false;
-            try
-            {
-                var data = JsonConvert.DeserializeObject<SettingData>(_model.SaveAndLoad.LoadData(SaveFileName));
-                Flag = data.Startup;
-            }
-            catch (Exception e)
-            {
-                var data = JsonConvert.SerializeObject(new SettingData(false));
-                _model.SaveAndLoad.SaveData(SaveFileName, data);
-            }
-
-            if (Flag)
-            {
-                ONandOFFtext = "ON";
-                _model.StatService.StartService();
-            }
-            else
-            {
-                ONandOFFtext = "OFF";
-            }
+            
         }
     }
 }

@@ -17,6 +17,9 @@ using Xamarin.Forms;
 
 namespace ATL.Droid
 {
+    /// <summary>
+    /// パッケージ名からアプリ名とアイコンを取得
+    /// </summary>
     class GetApplicationIconAndName_Droid: IGetApplicationIconAndName
     {
         public (string appName, string iconUrl) GetNameAndURL(string packageName)
@@ -28,13 +31,7 @@ namespace ATL.Droid
             (string appName, string iconUrl) appNameAndIcon;
             appNameAndIcon.appName = appList.Where(b => b.PackageName == packageName).Select(a => a.LoadLabel(packageManager)).First();
 
-
             var dr = packageManager.GetApplicationIcon(packageName);
-            // var bm = ((BitmapDrawable) dr).Bitmap;
-
-
-
-
 
             appNameAndIcon.iconUrl = dr.ToString();
             return appNameAndIcon;
