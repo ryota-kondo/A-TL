@@ -27,18 +27,19 @@ namespace ATL.Droid
 
         public void StartService()
         {
+            isUsageStatsAllowed();
             _Context.StartService(_intent);
-
-
-            
         }
 
         public void StopService()
         {
             _Context.StopService(_intent);
-            isUsageStatsAllowed();
+            
         }
 
+        /// <summary>
+        /// å†å¿ÇONÇ…ÇµÇ»Ç¢Ç∆ìÆçÏÇµÇ»Ç¢
+        /// </summary>
         public void isUsageStatsAllowed()
         {
             _Context.StartActivity(new Intent(Settings.ActionUsageAccessSettings));
