@@ -10,6 +10,9 @@ using Prism.Navigation;
 
 namespace ATL.ViewModels
 {
+    /// <summary>
+    /// 左側メニューの項目とナビゲーション用のViewModel
+    /// </summary>
     public class MasterDetailMainPageViewModel : BindableBase
     {
         public ObservableCollection<MenuItem> Menus { get; } = new ObservableCollection<MenuItem>

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace ATL.Models
 {
+    /// <summary>
+    /// 前ページに適用するModel
+    /// </summary>
     class AllPageModel : BindableBase, IAllPageModel
     {
         public IStartService StatService { get; set; }
@@ -68,11 +71,6 @@ namespace ATL.Models
                     t.app_name = tTexecuteTimes.app_name;
                     var startTime = DateTime.Parse(tTexecuteTimes.startTime);
                     var endTime = DateTime.Parse(tTexecuteTimes.endTime);
-
-                    if (DateTime.Parse(tTexecuteTimes.endTime) >= DateTime.Today.AddDays(1))
-                    {
-                        endTime = DateTime.Today.AddDays(1);
-                    }
 
                     var a = endTime - startTime;
                     var b = a.Seconds;
@@ -143,8 +141,6 @@ namespace ATL.Models
                     var startTime = DateTime.Parse(tTexecuteTimes.startTime);
                     var endTime = DateTime.Parse(tTexecuteTimes.endTime);
 
-                    endTime = DateTime.Today.AddDays(1);
-
                     var a = endTime - startTime;
                     var b = a.Seconds;
 
@@ -212,10 +208,6 @@ namespace ATL.Models
                 t.app_name = tTexecuteTimes.app_name;
                 var startTime = DateTime.Parse(tTexecuteTimes.startTime);
                 var endTime = DateTime.Parse(tTexecuteTimes.endTime);
-
-
-                endTime = DateTime.Today.AddDays(1);
-
 
                 var a = endTime - startTime;
                 var b = a.Seconds;
