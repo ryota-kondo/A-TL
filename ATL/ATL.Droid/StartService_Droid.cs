@@ -14,6 +14,8 @@ using Android.Provider;
 using ATL.Helpers;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using Android.Content.PM;
+using Android.Support.V4.Content;
 using static Android.Manifest;
 
 namespace ATL.Droid
@@ -28,9 +30,16 @@ namespace ATL.Droid
 
         public void StartService()
         {
-            if (true)
+            if (!isUsageStatsAllowed())
             {
-                isUsageStatsAllowed();
+                var alert = new AlertDialog.Builder(Forms.Context);
+                alert.SetTitle("Infomation");
+                alert.SetMessage("計測するためには使用履歴へのアクセスを許可してください。");
+                alert.SetPositiveButton("OK", (sender, args) =>
+                {
+                    _Context.StartActivity(new Intent(Settings.ActionUsageAccessSettings));
+                });
+                alert.Show();
             }
             _Context.StartService(_intent);
         }
@@ -38,12 +47,20 @@ namespace ATL.Droid
         public void StopService()
         {
             _Context.StopService(_intent);
-            
         }
 
-        public void isUsageStatsAllowed()
+        /// <summary>
+        /// 使用履歴へのPermissionが許可されているか確認する。
+        /// </summary>
+        /// <returns></returns>
+        public bool isUsageStatsAllowed()
         {
-            _Context.StartActivity(new Intent(Settings.ActionUsageAccessSettings));
+            AppOpsManager appOps = (AppOpsManager)Forms.Context.GetSystemService(Context.AppOpsService);
+            var mode = appOps.CheckOpNoThrow(AppOpsManager.OpstrGetUsageStats, Process.MyUid(), Forms.Context.PackageName);
+            return (mode == AppOpsManagerMode.Allowed);
         }
     }
 }
+
+
+

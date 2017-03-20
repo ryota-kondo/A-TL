@@ -13,26 +13,26 @@
             />
         <ToolbarItem 
             Command="{Binding ToolbarOnOffCommand}"
-            Text="On/OFF" 
+            Text="{Binding ONandOFFtext}" 
             />
         <ToolbarItem
             Command="{Binding ToolbarCommand}"
-             Text="ToMenu" />
+             Text="設定" />
     </ContentPage.ToolbarItems>
 
-    
-        <ScrollView>
-            <Grid>
-                <ListView ItemsSource="{Binding ExecuteTimesList}" Margin="10,5,0,0">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ImageCell Text="{Binding app_name}" Detail="{Binding exeTimeSecond, StringFormat='実行時間：{0}'}" ImageSource="{Binding icon_url}" />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-                <ActivityIndicator IsRunning="{Binding IsBusy}" Scale="0.3" />
-            </Grid>
-        </ScrollView>
-    
+
+    <ScrollView>
+        <Grid>
+            <ListView ItemsSource="{Binding ExecuteTimesList}" Margin="10,5,0,0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ImageCell Text="{Binding app_name}" Detail="{Binding exeTimeSecond, StringFormat='実行時間：{0}'}" ImageSource="{Binding icon_url}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" Scale="0.3" />
+        </Grid>
+    </ScrollView>
+
 
 </ContentPage>

@@ -61,7 +61,7 @@ namespace ATL.Droid
             {
                 return StartCommandResult.NotSticky;
             }
-            Toast.MakeText(Forms.Context, "監視開始", ToastLength.Short).Show();
+            //Toast.MakeText(Forms.Context, "監視開始", ToastLength.Short).Show();
 
             gStarted = true;
 

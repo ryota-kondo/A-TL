@@ -14,6 +14,7 @@ namespace ATL.Helpers
     {
         IStartService StatService { get; set; }
         IConnectSqlite ConnectSqlite { get; set; }
+        ISaveAndLoad SaveAndLoad { get; set; }
 
         IEnumerable<AppNameAndExecTime> GetTodayLists();
     }

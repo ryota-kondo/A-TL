@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Xamarin.Forms;
 
 namespace ATL.ViewModels
@@ -13,6 +14,7 @@ namespace ATL.ViewModels
     public class MainPageViewModel : BindableBase, INavigationAware
     {
         private readonly IAllPageModel _model;
+        private const string SaveFileName = "setting.json";
 
         private IEnumerable<AppNameAndExecTime> _executeTimes;
         public IEnumerable<AppNameAndExecTime> ExecuteTimesList
@@ -28,8 +30,12 @@ namespace ATL.ViewModels
             set { this.SetProperty(ref this.isBusy, value); }
         }
 
-
-        private bool _startFlag = false;
+        private string _onoff;
+        public string ONandOFFtext
+        {
+            get { return this._onoff; }
+            set { this.SetProperty(ref this._onoff, value); }
+        }
 
         public DelegateCommand ToolbarCommand { get; private set; }
         public DelegateCommand ToolbarOnOffCommand { get; private set; }
@@ -49,15 +55,32 @@ namespace ATL.ViewModels
         /// </summary>
         private void StartStop()
         {
-            if (!_startFlag)
+            bool Flag = false;
+            try
             {
-                _startFlag = true;
-                _model.StatService.StartService();
+                var data = JsonConvert.DeserializeObject<SettingData>(_model.SaveAndLoad.LoadData(SaveFileName));
+                Flag = data.Startup;
+            }
+            catch (Exception e)
+            {
+                var data = JsonConvert.SerializeObject(new SettingData(false));
+                _model.SaveAndLoad.SaveData(SaveFileName, data);
+                StartStop();
+            }
+
+            if (Flag)
+            {
+                var data = JsonConvert.SerializeObject(new SettingData(false));
+                _model.SaveAndLoad.SaveData(SaveFileName, data);
+                ONandOFFtext = "OFF";
+                _model.StatService.StopService();
             }
             else
             {
-                _startFlag = false;
-                _model.StatService.StopService();
+                var data = JsonConvert.SerializeObject(new SettingData(true));
+                _model.SaveAndLoad.SaveData(SaveFileName, data);
+                ONandOFFtext = "ON";
+                _model.StatService.StartService();
             }
         }
 
@@ -87,6 +110,29 @@ namespace ATL.ViewModels
         public void OnNavigatedTo(NavigationParameters parameters)
         {
             SetList();
+
+            var Flag = false;
+            try
+            {
+                var data = JsonConvert.DeserializeObject<SettingData>(_model.SaveAndLoad.LoadData(SaveFileName));
+                Flag = data.Startup;
+            }
+            catch (Exception e)
+            {
+                var data = JsonConvert.SerializeObject(new SettingData(false));
+                _model.SaveAndLoad.SaveData(SaveFileName, data);
+                StartStop();
+            }
+
+            if (Flag)
+            {
+                ONandOFFtext = "ON";
+                _model.StatService.StartService();
+            }
+            else
+            {
+                ONandOFFtext = "OFF";
+            }
         }
     }
 }

@@ -12,12 +12,14 @@ namespace ATL.Models
     {
         public IStartService StatService { get; set; }
         public IConnectSqlite ConnectSqlite { get; set; }
+        public ISaveAndLoad SaveAndLoad { get; set; }
         public IGetApplicationIconAndName GetApplicationIconAndName { get; set; }
 
-        public AllPageModel(IStartService startService,IConnectSqlite connectSqlite,IGetApplicationIconAndName getApplicationIconAndName)
+        public AllPageModel(IStartService startService,IConnectSqlite connectSqlite,IGetApplicationIconAndName getApplicationIconAndName,ISaveAndLoad saveAndLoad)
         {
             this.StatService = startService;
             this.ConnectSqlite = connectSqlite;
+            this.SaveAndLoad = saveAndLoad;
             this.GetApplicationIconAndName = getApplicationIconAndName;
         }
 
