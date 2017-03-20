@@ -15,7 +15,7 @@ namespace ATL
         {
             InitializeComponent();
 
-            NavigationService.NavigateAsync("/NavigationPage/MainPage?title=Hello%20from%20Xamarin.Forms");
+            NavigationService.NavigateAsync("/MasterDetailMainPage/NavigationPage/MainPage/");
         }
 
         protected override void RegisterTypes()
@@ -23,9 +23,16 @@ namespace ATL
             Container.RegisterTypeForNavigation<NavigationPage>();
 
             Container.RegisterTypeForNavigation<MainPage>();
+            Container.RegisterTypeForNavigation<MenuPage>();
+            Container.RegisterTypeForNavigation<MasterDetailMainPage>();
+            Container.RegisterTypeForNavigation<SettingPage>();
 
             Container.RegisterType<IAllPageModel, AllPageModel>(new ContainerControlledLifetimeManager());
-            Container.RegisterTypeForNavigation<MenuPage>();
+
+            Container.RegisterTypeForNavigation<MonthPage>();
+            Container.RegisterTypeForNavigation<YesterdayPage>();
+            Container.RegisterTypeForNavigation<WeekPage>();
+            Container.RegisterTypeForNavigation<AllDataPage>();
         }
     }
 }

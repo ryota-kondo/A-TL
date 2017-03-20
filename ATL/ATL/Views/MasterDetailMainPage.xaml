@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<MasterDetailPage xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                  xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+                  xmlns:views="clr-namespace:ATL.Views;assembly=ATL"
+                  prism:ViewModelLocator.AutowireViewModel="True"
+                  x:Class="ATL.Views.MasterDetailMainPage"
+                  IsPresented="{Binding IsPresented, Mode=TwoWay}">
+    <MasterDetailPage.Master>
+        <views:MenuPage />
+    </MasterDetailPage.Master>
+    <MasterDetailPage.Detail>
+        <ContentPage Title="Dummy" />
+        <!-- Dummy -->
+    </MasterDetailPage.Detail>
+</MasterDetailPage>

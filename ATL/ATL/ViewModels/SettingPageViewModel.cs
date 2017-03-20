@@ -7,19 +7,16 @@ using ATL.Helpers;
 
 namespace ATL.ViewModels
 {
-    public class MenuPageViewModel : BindableBase
+    public class SettingPageViewModel : BindableBase
     {
-
         private readonly IAllPageModel _model;
 
         public DelegateCommand DeleteCommand { get; set; }
-        public MenuPageViewModel(IAllPageModel model)
+        public SettingPageViewModel(IAllPageModel model)
         {
             _model = model;
             DeleteCommand = new DelegateCommand(ResetDB);
         }
-
-        
 
         private void ResetDB()
         {
