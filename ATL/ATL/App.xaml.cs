@@ -3,6 +3,7 @@ using ATL.Views;
 using ATL.Helpers;
 using ATL.Models;
 using Microsoft.Practices.Unity;
+using Xamarin.Forms;
 
 namespace ATL
 {
@@ -14,14 +15,17 @@ namespace ATL
         {
             InitializeComponent();
 
-            NavigationService.NavigateAsync("MainPage?title=Hello%20from%20Xamarin.Forms");
+            NavigationService.NavigateAsync("/NavigationPage/MainPage?title=Hello%20from%20Xamarin.Forms");
         }
 
         protected override void RegisterTypes()
         {
+            Container.RegisterTypeForNavigation<NavigationPage>();
+
             Container.RegisterTypeForNavigation<MainPage>();
 
             Container.RegisterType<IAllPageModel, AllPageModel>(new ContainerControlledLifetimeManager());
+            Container.RegisterTypeForNavigation<MenuPage>();
         }
     }
 }

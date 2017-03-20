@@ -7,11 +7,15 @@ using System.Threading.Tasks;
 namespace ATL.Helpers
 {
     /// <summary>
-    /// 各プラットフォームで監視を常駐させるためのインターフェイス
+    /// 設定データ用の構造体
     /// </summary>
-    public interface IStartService
+    public struct SettingData
     {
-        void StartService();
-        void StopService();
+        public bool Startup { get; set; }
+
+        public SettingData(bool b)
+        {
+            Startup = b;
+        }
     }
 }

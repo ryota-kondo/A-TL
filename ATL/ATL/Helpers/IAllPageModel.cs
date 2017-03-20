@@ -7,11 +7,15 @@ using System.Threading.Tasks;
 
 namespace ATL.Helpers
 {
+    /// <summary>
+    /// 各Modelのインジェクション用のコンテナインターフェイス
+    /// </summary>
     public interface IAllPageModel : INotifyPropertyChanged
     {
         IStartService StatService { get; set; }
         IConnectSqlite ConnectSqlite { get; set; }
+        ISaveAndLoad SaveAndLoad { get; set; }
 
-        string GetDbString();
+        IEnumerable<AppNameAndExecTime> GetTodayLists();
     }
 }

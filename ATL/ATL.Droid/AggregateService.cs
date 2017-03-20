@@ -30,7 +30,7 @@ namespace ATL.Droid
     [Service]
     class AggregateService : Service
     {
-        public override IBinder OnBind(Intent intent) => throw new NotImplementedException();
+        public override IBinder OnBind(Intent intent) => null;
 
         private bool gStarted = false;
         private bool appKeisokuFlag = false;
@@ -39,15 +39,14 @@ namespace ATL.Droid
         // private int ecxecTime;
         string startTime, endTime;
 
-        
+        private (int x, int y) value;
+
+
         private const int MIN_KEISOKU_SECOND = 1;
 
         // List<t_texecute_times> list2 = new List<t_texecute_times>();
 
         System.Timers.Timer timer = new System.Timers.Timer();
-
-        private static readonly object Locker = new object();
-
         private ConnectSqlite_Dorid dbConnect;
 
         public override void OnCreate()
@@ -62,7 +61,7 @@ namespace ATL.Droid
             {
                 return StartCommandResult.NotSticky;
             }
-            Toast.MakeText(Forms.Context, "監視開始", ToastLength.Short).Show();
+            //Toast.MakeText(Forms.Context, "監視開始", ToastLength.Short).Show();
 
             gStarted = true;
 
@@ -70,8 +69,8 @@ namespace ATL.Droid
             Notification navigate;
             var context = Forms.Context;
 
-            Intent _intent = new Intent(context, typeof(AggregateService));
-            pendingIntent = PendingIntent.GetService(context, 0, _intent, 0);
+            Intent _intent = new Intent(context, typeof(MainActivity));
+            pendingIntent = PendingIntent.GetActivity(context, 0, _intent, 0);
 
             navigate = new Notification.Builder(context)
                 .SetContentTitle("A-TL")
@@ -99,29 +98,21 @@ namespace ATL.Droid
 
             // タイマーを停止
             timer.Stop();
-
-            //var _toastString = "";
-            //foreach(var l in list2)
-            //{
-            //    _toastString += $"{l.app_name} : \n\r {l.startTime} to {l.endTime}\n\r";
-            //}
-
-
-            // Toast.MakeText(Forms.Context, _toastString, ToastLength.Long).Show();
         }
 
         public void OnElapsed_TimersTimer(object sender, ElapsedEventArgs e)
         {
             var _last_app_name = this.lastAppName;
-            var (_app_name, _event_name) = kanshi();
 
-            if(_last_app_name == _app_name)
+            (string _app_name,UsageEventType _event_name) eventInfo = kanshi();
+
+            if(_last_app_name == eventInfo._app_name)
             {
-                if(UsageEventType.MoveToForeground == _event_name) // 計測を継続
+                if(UsageEventType.MoveToForeground == eventInfo._event_name) // 計測を継続
                 {
                     // this.ecxecTime += MIN_KEISOKU_SECOND;
                 }
-                else if(UsageEventType.MoveToBackground == _event_name) // 計測終わり
+                else if(UsageEventType.MoveToBackground == eventInfo._event_name) // 計測終わり
                 {
                     InsertDb();
 
@@ -139,17 +130,17 @@ namespace ATL.Droid
                     // this.ecxecTime += MIN_KEISOKU_SECOND;
                 }
 
-                if (UsageEventType.MoveToForeground == _event_name) // 新たに計測開始
+                if (UsageEventType.MoveToForeground == eventInfo._event_name) // 新たに計測開始
                 {
                     InsertDb();
 
-                    this.lastAppName = _app_name;
+                    this.lastAppName = eventInfo._app_name;
                     // this.ecxecTime = 0;
 
                     appKeisokuFlag = true;
                     this.startTime = DateTime.Now.ToString();
                 }
-                else if (UsageEventType.MoveToBackground == _event_name) // 前回の終了が無いけど実質計測終わり
+                else if (UsageEventType.MoveToBackground == eventInfo._event_name) // 前回の終了が無いけど実質計測終わり
                 {
                     InsertDb();
 
@@ -195,8 +186,6 @@ namespace ATL.Droid
             endCal.Set(Calendar.Date, DateTime.Now.Day);
             endCal.Set(Calendar.Month, DateTime.Now.Month - 1);
             endCal.Set(Calendar.Year, DateTime.Now.Year);
-
-            var currentTimeEnd = endCal.TimeInMillis;
 
             usageStatsManager = (UsageStatsManager)_context.GetSystemService(UsageStatsService);
             long time = endCal.TimeInMillis;

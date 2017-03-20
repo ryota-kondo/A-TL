@@ -31,8 +31,12 @@ namespace ATL.Droid
     {
         public void RegisterTypes(IUnityContainer container)
         {
+            // container.RegisterType<, _Dorid>(new ContainerControlledLifetimeManager());
             container.RegisterType<IStartService, StartService_Droid>(new ContainerControlledLifetimeManager());
             container.RegisterType<IConnectSqlite, ConnectSqlite_Dorid>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IGetApplicationIconAndName, GetApplicationIconAndName_Droid>(
+                new ContainerControlledLifetimeManager());
+            container.RegisterType <ISaveAndLoad, SaveAndLoad_Droid > (new ContainerControlledLifetimeManager());
         }
     }
 }

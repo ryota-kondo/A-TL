@@ -14,35 +14,53 @@ using Android.Provider;
 using ATL.Helpers;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using Android.Content.PM;
+using Android.Support.V4.Content;
 using static Android.Manifest;
 
 namespace ATL.Droid
 {
+    /// <summary>
+    /// Serviceï¿½Ìí’“ï¿½ï¿½ON/OFFï¿½Ì‹@ï¿½\ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½Wï¿½Fï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½X
+    /// </summary>
     class StartService_Droid : IStartService
     {
         private static readonly Context _Context = Forms.Context;
-
         private readonly Intent _intent = new Intent(_Context, typeof(AggregateService));
-
 
         public void StartService()
         {
-            isUsageStatsAllowed();
+            if (!isUsageStatsAllowed())
+            {
+                var alert = new AlertDialog.Builder(Forms.Context);
+                alert.SetTitle("Infomation");
+                alert.SetMessage("ï¿½vï¿½ï¿½ï¿½ï¿½ï¿½é‚½ï¿½ß‚É‚Ígï¿½pï¿½ï¿½ï¿½ï¿½ï¿½Ö‚ÌƒAï¿½Nï¿½Zï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½Â‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½B");
+                alert.SetPositiveButton("OK", (sender, args) =>
+                {
+                    _Context.StartActivity(new Intent(Settings.ActionUsageAccessSettings));
+                });
+                alert.Show();
+            }
             _Context.StartService(_intent);
         }
 
         public void StopService()
         {
-            _Context.StopService(_intent);
-            
+            _Context.StopService(_intent); 
         }
-
+        
         /// <summary>
-        /// Œ ŒÀ‚ğON‚É‚µ‚È‚¢‚Æ“®ì‚µ‚È‚¢
+        /// ï¿½gï¿½pï¿½ï¿½ï¿½ï¿½ï¿½Ö‚ï¿½Permissionï¿½ï¿½ï¿½ï¿½ï¿½Â‚ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½é‚©ï¿½mï¿½Fï¿½ï¿½ï¿½ï¿½ï¿½B
         /// </summary>
-        public void isUsageStatsAllowed()
+        /// <returns></returns>
+        public bool isUsageStatsAllowed()
         {
-            _Context.StartActivity(new Intent(Settings.ActionUsageAccessSettings));
+            AppOpsManager appOps = (AppOpsManager)Forms.Context.GetSystemService(Context.AppOpsService);
+            var mode = appOps.CheckOpNoThrow(AppOpsManager.OpstrGetUsageStats, Process.MyUid(), Forms.Context.PackageName);
+            return (mode == AppOpsManagerMode.Allowed);
         }
     }
 }
+
+
+
