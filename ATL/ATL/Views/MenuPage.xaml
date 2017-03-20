@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="ATL.Views.MenuPage">
-    <StackLayout HorizontalOptions="Center" VerticalOptions="Start">
+             x:Class="ATL.Views.MenuPage"
+             Title="設定">
+    <StackLayout HorizontalOptions="Center">
         <Button 
-                Text="削除"
+                Text="集計結果の削除"
                 Command="{Binding DeleteCommand}" />
     </StackLayout>
 </ContentPage>
