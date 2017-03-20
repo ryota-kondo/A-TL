@@ -30,7 +30,7 @@ namespace ATL.ViewModels
             set { this.SetProperty(ref this.isBusy, value); }
         }
 
-        private string _onoff;
+        private string _onoff = "OFF";
         public string ONandOFFtext
         {
             get { return this._onoff; }
@@ -121,7 +121,6 @@ namespace ATL.ViewModels
             {
                 var data = JsonConvert.SerializeObject(new SettingData(false));
                 _model.SaveAndLoad.SaveData(SaveFileName, data);
-                StartStop();
             }
 
             if (Flag)

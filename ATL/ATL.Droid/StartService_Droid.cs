@@ -20,9 +20,6 @@ using static Android.Manifest;
 
 namespace ATL.Droid
 {
-    /// <summary>
-    /// Service�̏풓��ON/OFF�̋@�\���C���W�F�N�V���������N���X
-    /// </summary>
     class StartService_Droid : IStartService
     {
         private static readonly Context _Context = Forms.Context;
@@ -34,7 +31,7 @@ namespace ATL.Droid
             {
                 var alert = new AlertDialog.Builder(Forms.Context);
                 alert.SetTitle("Infomation");
-                alert.SetMessage("�v�����邽�߂ɂ͎g�p�����ւ̃A�N�Z�X�������Ă��������B");
+                alert.SetMessage("監視を開始するには使用履歴へのアクセスを許可してください");
                 alert.SetPositiveButton("OK", (sender, args) =>
                 {
                     _Context.StartActivity(new Intent(Settings.ActionUsageAccessSettings));
@@ -50,7 +47,7 @@ namespace ATL.Droid
         }
         
         /// <summary>
-        /// �g�p�����ւ�Permission���������Ă��邩�m�F�����B
+        /// 使用履歴へのパーミッションの確認
         /// </summary>
         /// <returns></returns>
         public bool isUsageStatsAllowed()
