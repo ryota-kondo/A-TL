@@ -11,6 +11,6 @@ namespace ATL.Helpers
     /// </summary>
     public interface IGetApplicationIconAndName
     {
-        (string appName,string iconUrl) GetNameAndURL(string packageName);
+        NameAndUrl GetNameAndURL(string packageName);
     }
 }

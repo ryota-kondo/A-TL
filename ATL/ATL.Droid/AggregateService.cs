@@ -39,7 +39,7 @@ namespace ATL.Droid
         // private int ecxecTime;
         string startTime, endTime;
 
-        private (int x, int y) value;
+        // private (int x, int y) value;
 
 
         private const int MIN_KEISOKU_SECOND = 1;
@@ -104,15 +104,15 @@ namespace ATL.Droid
         {
             var _last_app_name = this.lastAppName;
 
-            (string _app_name,UsageEventType _event_name) eventInfo = kanshi();
+            MyStruct eventInfo = kanshi();
 
-            if(_last_app_name == eventInfo._app_name)
+            if(_last_app_name == eventInfo.app_name)
             {
-                if(UsageEventType.MoveToForeground == eventInfo._event_name) // 計測を継続
+                if(UsageEventType.MoveToForeground == eventInfo.event_name) // 計測を継続
                 {
                     // this.ecxecTime += MIN_KEISOKU_SECOND;
                 }
-                else if(UsageEventType.MoveToBackground == eventInfo._event_name) // 計測終わり
+                else if(UsageEventType.MoveToBackground == eventInfo.event_name) // 計測終わり
                 {
                     InsertDb();
 
@@ -130,17 +130,17 @@ namespace ATL.Droid
                     // this.ecxecTime += MIN_KEISOKU_SECOND;
                 }
 
-                if (UsageEventType.MoveToForeground == eventInfo._event_name) // 新たに計測開始
+                if (UsageEventType.MoveToForeground == eventInfo.event_name) // 新たに計測開始
                 {
                     InsertDb();
 
-                    this.lastAppName = eventInfo._app_name;
+                    this.lastAppName = eventInfo.app_name;
                     // this.ecxecTime = 0;
 
                     appKeisokuFlag = true;
                     this.startTime = DateTime.Now.ToString();
                 }
-                else if (UsageEventType.MoveToBackground == eventInfo._event_name) // 前回の終了が無いけど実質計測終わり
+                else if (UsageEventType.MoveToBackground == eventInfo.event_name) // 前回の終了が無いけど実質計測終わり
                 {
                     InsertDb();
 
@@ -172,7 +172,7 @@ namespace ATL.Droid
         /// UsageEvents.Event()に記録された最後のアプリ名とそのイベントを返す
         /// </summary>
         /// <returns></returns>
-        public (string,UsageEventType) kanshi()
+        public MyStruct kanshi()
         {
             var _context = Forms.Context;
 
@@ -200,7 +200,23 @@ namespace ATL.Droid
                     event_name = event1.EventType;
                 }
             }
-            return (app_name,event_name);
+            MyStruct myStruct = new MyStruct(app_name, event_name);
+
+            // return (app_name,event_name);
+            return myStruct;
+        }
+
+        public struct MyStruct
+        {
+            public string app_name;
+            public UsageEventType event_name;
+
+            public MyStruct(string appn,UsageEventType eventn)
+            {
+                app_name = appn;
+                event_name = eventn;
+            }
+
         }
 
         

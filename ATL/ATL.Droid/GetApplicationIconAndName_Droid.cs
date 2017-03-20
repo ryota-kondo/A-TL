@@ -22,13 +22,13 @@ namespace ATL.Droid
     /// </summary>
     class GetApplicationIconAndName_Droid: IGetApplicationIconAndName
     {
-        public (string appName, string iconUrl) GetNameAndURL(string packageName)
+        public NameAndUrl GetNameAndURL(string packageName)
         {
 
             PackageManager packageManager = Forms.Context.PackageManager;
             var appList = packageManager.GetInstalledApplications(PackageInfoFlags.Activities);
 
-            (string appName, string iconUrl) appNameAndIcon;
+            NameAndUrl appNameAndIcon;
             appNameAndIcon.appName = appList.Where(b => b.PackageName == packageName).Select(a => a.LoadLabel(packageManager)).First();
 
             var dr = packageManager.GetApplicationIcon(packageName);

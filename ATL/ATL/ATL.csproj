@@ -41,6 +41,7 @@
     <Compile Include="Helpers\IGetApplicationIconAndName.cs" />
     <Compile Include="Helpers\ISaveAndLoad.cs" />
     <Compile Include="Helpers\IStartService.cs" />
+    <Compile Include="Helpers\NameAndUrl.cs" />
     <Compile Include="Helpers\t_texecute_times.cs" />
     <Compile Include="Models\AllPageModel.cs" />
     <Compile Include="Helpers\SettingData.cs" />
