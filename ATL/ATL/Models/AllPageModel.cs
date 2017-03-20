@@ -19,10 +19,10 @@ namespace ATL.Models
             this.ConnectSqlite = connectSqlite;
         }
 
-        public IEnumerable<AppExeTimeList> GetTodayLists()
+        public IEnumerable<AppNameAndExecTime> GetTodayLists()
         {
             var db = ConnectSqlite.GetItems();
-            var appExeTimeLists = new List<AppExeTimeList>();
+            var appExeTimeLists = new List<AppNameAndExecTimeTemp>();
 
 
             //AppExeTimeListの形へ型変換しつつ代入
@@ -30,7 +30,7 @@ namespace ATL.Models
             {
                 if (DateTime.Parse(VARIABLE.startTime) > DateTime.Today)
                 {
-                    AppExeTimeList t = new AppExeTimeList();
+                    AppNameAndExecTimeTemp t = new AppNameAndExecTimeTemp();
 
                     t.app_name = VARIABLE.app_name;
                     var startTime = DateTime.Parse(VARIABLE.startTime);
@@ -52,14 +52,18 @@ namespace ATL.Models
 
             // アプリ名ごとに合計時間を計測
             var temp = appExeTimeLists.GroupBy(a => a.app_name);
-            var q = new List<AppExeTimeList>();
+            var q = new List<AppNameAndExecTime>();
 
-            foreach (IGrouping<string,AppExeTimeList> v in temp)
+            foreach (IGrouping<string,AppNameAndExecTimeTemp> v in temp)
             {
-                AppExeTimeList t = new AppExeTimeList();
+                AppNameAndExecTime t = new AppNameAndExecTime();
 
                 t.app_name = v.Key;
-                t.exeTimeSecond = v.Sum(a => a.exeTimeSecond);
+
+                var second = v.Sum(a => a.exeTimeSecond);
+                var ts = new TimeSpan(0, 0, second);
+                t.exeTimeSecond = ts.ToString();
+
                 q.Add(t);
             }
             return q.OrderByDescending(a => a.exeTimeSecond);

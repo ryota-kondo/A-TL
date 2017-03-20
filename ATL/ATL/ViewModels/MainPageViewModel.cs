@@ -14,8 +14,8 @@ namespace ATL.ViewModels
     {
         private readonly IAllPageModel _model;
 
-        private IEnumerable<AppExeTimeList> _executeTimes;
-        public IEnumerable<AppExeTimeList> Test1
+        private IEnumerable<AppNameAndExecTime> _executeTimes;
+        public IEnumerable<AppNameAndExecTime> Test1
         {
             get { return _executeTimes; }
             set { this.SetProperty(ref this._executeTimes, value); }
