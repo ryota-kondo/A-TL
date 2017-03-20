@@ -29,9 +29,12 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Orientation="Vertical">
-                                <Label Text="{Binding app_name}" />
-                                <Label Text="{Binding exeTimeSecond}" />
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="{Binding icon_url}" />
+                                <StackLayout Orientation="Vertical">
+                                    <Label Text="{Binding app_name}" />
+                                    <Label Text="{Binding exeTimeSecond}" />
+                                </StackLayout>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>

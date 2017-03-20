@@ -33,6 +33,8 @@ namespace ATL.Droid
         {
             container.RegisterType<IStartService, StartService_Droid>(new ContainerControlledLifetimeManager());
             container.RegisterType<IConnectSqlite, ConnectSqlite_Dorid>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IGetApplicationIconAndName, GetApplicationIconAndName_Droid>(
+                new ContainerControlledLifetimeManager());
         }
     }
 }

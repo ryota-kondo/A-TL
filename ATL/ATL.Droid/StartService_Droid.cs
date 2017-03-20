@@ -18,25 +18,27 @@ using static Android.Manifest;
 
 namespace ATL.Droid
 {
+    /// <summary>
+    /// Serviceの常駐のON/OFFの機能をインジェクションするクラス
+    /// </summary>
     class StartService_Droid : IStartService
     {
         private static readonly Context _Context = Forms.Context;
-
         private readonly Intent _intent = new Intent(_Context, typeof(AggregateService));
-
 
         public void StartService()
         {
+            if (true)
+            {
+                isUsageStatsAllowed();
+            }
             _Context.StartService(_intent);
-
-
-            
         }
 
         public void StopService()
         {
             _Context.StopService(_intent);
-            isUsageStatsAllowed();
+            
         }
 
         public void isUsageStatsAllowed()

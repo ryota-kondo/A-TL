@@ -135,6 +135,7 @@
   <ItemGroup>
     <Compile Include="AggregateService.cs" />
     <Compile Include="ConnectSqlite_Dorid.cs" />
+    <Compile Include="GetApplicationIconAndName_Droid.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

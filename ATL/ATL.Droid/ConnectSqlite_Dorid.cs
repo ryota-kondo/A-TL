@@ -15,6 +15,9 @@ using ATL.Helpers;
 
 namespace ATL.Droid
 {
+    /// <summary>
+    /// [Android]ローカルデータベースへ計測したアプリ実行時間を保存するクラスのインジェクション
+    /// </summary>
     public class ConnectSqlite_Dorid: IConnectSqlite
     {
         private static readonly object Locker = new object();

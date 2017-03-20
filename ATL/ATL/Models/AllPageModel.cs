@@ -12,13 +12,19 @@ namespace ATL.Models
     {
         public IStartService StatService { get; set; }
         public IConnectSqlite ConnectSqlite { get; set; }
+        public IGetApplicationIconAndName GetApplicationIconAndName { get; set; }
 
-        public AllPageModel(IStartService startService,IConnectSqlite connectSqlite)
+        public AllPageModel(IStartService startService,IConnectSqlite connectSqlite,IGetApplicationIconAndName getApplicationIconAndName)
         {
             this.StatService = startService;
             this.ConnectSqlite = connectSqlite;
+            this.GetApplicationIconAndName = getApplicationIconAndName;
         }
 
+        /// <summary>
+        /// 当日のアプリ実行時間のリストをIEnumerable<AppNameAndExecTime>で返す
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<AppNameAndExecTime> GetTodayLists()
         {
             var db = ConnectSqlite.GetItems();
@@ -58,11 +64,14 @@ namespace ATL.Models
             {
                 AppNameAndExecTime t = new AppNameAndExecTime();
 
-                t.app_name = v.Key;
+                // app名 & ICON
+                var NameUrl = GetApplicationIconAndName.GetNameAndURL(v.Key);
+                t.app_name = NameUrl.Item1;
+                t.icon_url = NameUrl.Item2;
 
                 var second = v.Sum(a => a.exeTimeSecond);
                 var ts = new TimeSpan(0, 0, second);
-                t.exeTimeSecond = ts.ToString();
+                t.exeTimeSecond = $"実行時間　: {ts}";
 
                 q.Add(t);
             }

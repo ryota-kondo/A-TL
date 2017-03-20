@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ATL.Helpers
 {
+    /// <summary>
+    /// ローカルデータベースへ計測したアプリ実行時間を保存するクラスのインジェクションのためのインターフェイス
+    /// </summary>
     public interface IConnectSqlite
     {
         SQLiteConnection GetConnection();

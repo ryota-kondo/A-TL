@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ATL.Helpers
 {
+    /// <summary>
+    /// 各Modelのインジェクション用のコンテナインターフェイス
+    /// </summary>
     public interface IAllPageModel : INotifyPropertyChanged
     {
         IStartService StatService { get; set; }

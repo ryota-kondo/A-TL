@@ -38,6 +38,7 @@
     <Compile Include="Helpers\AppExeTimecs.cs" />
     <Compile Include="Helpers\IAllPageModel.cs" />
     <Compile Include="Helpers\IConnectSqlite.cs" />
+    <Compile Include="Helpers\IGetApplicationIconAndName.cs" />
     <Compile Include="Helpers\IStartService.cs" />
     <Compile Include="Helpers\t_texecute_times.cs" />
     <Compile Include="Models\AllPageModel.cs" />
