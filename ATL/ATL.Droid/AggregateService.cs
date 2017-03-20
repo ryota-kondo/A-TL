@@ -47,9 +47,6 @@ namespace ATL.Droid
         // List<t_texecute_times> list2 = new List<t_texecute_times>();
 
         System.Timers.Timer timer = new System.Timers.Timer();
-
-        private static readonly object Locker = new object();
-
         private ConnectSqlite_Dorid dbConnect;
 
         public override void OnCreate()
@@ -72,8 +69,8 @@ namespace ATL.Droid
             Notification navigate;
             var context = Forms.Context;
 
-            Intent _intent = new Intent(context, typeof(AggregateService));
-            pendingIntent = PendingIntent.GetService(context, 0, _intent, 0);
+            Intent _intent = new Intent(context, typeof(MainActivity));
+            pendingIntent = PendingIntent.GetActivity(context, 0, _intent, 0);
 
             navigate = new Notification.Builder(context)
                 .SetContentTitle("A-TL")
@@ -101,15 +98,6 @@ namespace ATL.Droid
 
             // タイマーを停止
             timer.Stop();
-
-            //var _toastString = "";
-            //foreach(var l in list2)
-            //{
-            //    _toastString += $"{l.app_name} : \n\r {l.startTime} to {l.endTime}\n\r";
-            //}
-
-
-            // Toast.MakeText(Forms.Context, _toastString, ToastLength.Long).Show();
         }
 
         public void OnElapsed_TimersTimer(object sender, ElapsedEventArgs e)
@@ -198,8 +186,6 @@ namespace ATL.Droid
             endCal.Set(Calendar.Date, DateTime.Now.Day);
             endCal.Set(Calendar.Month, DateTime.Now.Month - 1);
             endCal.Set(Calendar.Year, DateTime.Now.Year);
-
-            var currentTimeEnd = endCal.TimeInMillis;
 
             usageStatsManager = (UsageStatsManager)_context.GetSystemService(UsageStatsService);
             long time = endCal.TimeInMillis;

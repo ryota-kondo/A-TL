@@ -21,13 +21,6 @@ namespace ATL.ViewModels
             set { this.SetProperty(ref this._executeTimes, value); }
         }
 
-        private string _title;
-        public string Title
-        {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
-        }
-
         private bool _startFlag = false;
 
         public DelegateCommand ToolbarCommand { get; private set; }
@@ -43,6 +36,9 @@ namespace ATL.ViewModels
             ListViewCommand = new DelegateCommand(SetList);
         }
 
+        /// <summary>
+        /// 状態に応じて起動と終了を切り替える
+        /// </summary>
         private void StartStop()
         {
             if (!_startFlag)
@@ -57,6 +53,9 @@ namespace ATL.ViewModels
             }
         }
 
+        /// <summary>
+        /// 集計した情報を一覧表示
+        /// </summary>
         private void SetList()
         {
             var t = _model.GetTodayLists();
