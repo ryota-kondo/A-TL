@@ -15,7 +15,7 @@ namespace ATL.ViewModels
         private readonly IAllPageModel _model;
 
         private IEnumerable<AppNameAndExecTime> _executeTimes;
-        public IEnumerable<AppNameAndExecTime> Test1
+        public IEnumerable<AppNameAndExecTime> ExecuteTimesList
         {
             get { return _executeTimes; }
             set { this.SetProperty(ref this._executeTimes, value); }
@@ -59,7 +59,7 @@ namespace ATL.ViewModels
         private void SetList()
         {
             var t = _model.GetTodayLists();
-            Test1 = t;
+            ExecuteTimesList = t;
         }
 
         public void OnNavigatedFrom(NavigationParameters parameters)
