@@ -26,10 +26,13 @@ namespace ATL.Models
             this.GetApplicationIconAndName = getApplicationIconAndName;
         }
 
-
+        /// <summary>
+        /// IEnumerable&lt;AppNameAndExecTimeTemp&gt;を受け取り名前ごとの実行時間の合計を計算しIEnumerable AppNameAndExecTimeにて返す
+        /// </summary>
+        /// <param name="appExeTimeLists"></param>
+        /// <returns></returns>
         private IEnumerable<AppNameAndExecTime> ConvartTimeList(IEnumerable<AppNameAndExecTimeTemp> appExeTimeLists)
         {
-            // アプリ名ごとに合計時間を計測
             var appNameGroup = appExeTimeLists.GroupBy(a => a.app_name);
             var appNameAndExecTime = new List<AppNameAndExecTime>();
 
@@ -72,10 +75,7 @@ namespace ATL.Models
                     var startTime = DateTime.Parse(tTexecuteTimes.startTime);
                     var endTime = DateTime.Parse(tTexecuteTimes.endTime);
 
-                    var a = endTime - startTime;
-                    var b = a.Seconds;
-
-                    t.exeTimeSecond = b;
+                    t.exeTimeSecond = SubtractDateTime(startTime, endTime);
 
                     appExeTimeLists.Add(t);
                 }
@@ -109,10 +109,7 @@ namespace ATL.Models
                         endTime = DateTime.Today;
                     }
 
-                    var a = endTime - startTime;
-                    var b = a.Seconds;
-
-                    t.exeTimeSecond = b;
+                    t.exeTimeSecond = SubtractDateTime(startTime, endTime);
 
                     appExeTimeLists.Add(t);
                 }
@@ -141,10 +138,7 @@ namespace ATL.Models
                     var startTime = DateTime.Parse(tTexecuteTimes.startTime);
                     var endTime = DateTime.Parse(tTexecuteTimes.endTime);
 
-                    var a = endTime - startTime;
-                    var b = a.Seconds;
-
-                    t.exeTimeSecond = b;
+                    t.exeTimeSecond = SubtractDateTime(startTime, endTime);
 
                     appExeTimeLists.Add(t);
                 }
@@ -178,10 +172,7 @@ namespace ATL.Models
                         endTime = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DaysInMonth(DateTime.Today));
                     }
 
-                    var a = endTime - startTime;
-                    var b = a.Seconds;
-
-                    t.exeTimeSecond = b;
+                    t.exeTimeSecond = SubtractDateTime(startTime, endTime);
 
                     appExeTimeLists.Add(t);
                 }
@@ -209,10 +200,7 @@ namespace ATL.Models
                 var startTime = DateTime.Parse(tTexecuteTimes.startTime);
                 var endTime = DateTime.Parse(tTexecuteTimes.endTime);
 
-                var a = endTime - startTime;
-                var b = a.Seconds;
-
-                t.exeTimeSecond = b;
+                t.exeTimeSecond = SubtractDateTime(startTime, endTime);
 
                 appExeTimeLists.Add(t);
 
@@ -220,9 +208,17 @@ namespace ATL.Models
             return ConvartTimeList(appExeTimeLists);
         }
 
-        public static int DaysInMonth(DateTime dt)
+        public int DaysInMonth(DateTime dt)
         {
             return DateTime.DaysInMonth(dt.Year, dt.Month);
         }
+
+        public int SubtractDateTime(DateTime Start, DateTime End)
+        {
+            var time = End - Start;
+            return (int)time.TotalSeconds;
+
+        }
+
     }
 }

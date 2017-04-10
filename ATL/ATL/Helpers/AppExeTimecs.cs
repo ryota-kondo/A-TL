@@ -22,6 +22,6 @@ namespace ATL.Helpers
     {
         public string app_name { get; set; }
         public string icon_url { get; set; }
-        public String exeTimeSecond { get; set; }
+        public string exeTimeSecond { get; set; }
     }
 }
