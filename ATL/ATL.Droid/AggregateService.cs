@@ -1,25 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.App.Usage;
 
 using Xamarin.Forms;
-using static Android.App.ActivityManager;
-
-using Android.Icu.Util;
-using TimeZone = Android.Icu.Util.TimeZone;
 using System.Timers;
-using System.Threading;
-using System.IO;
-using SQLite;
 using ATL.Helpers;
 
 namespace ATL.Droid
@@ -154,17 +141,14 @@ namespace ATL.Droid
 
         private void InsertDb()
         {
-            if(!(this.lastAppName == ""))
-            {
-                this.endTime = DateTime.Now.ToString();
+            if (this.lastAppName == "") return;
+            this.endTime = DateTime.Now.ToString();
 
-                var temp = new t_texecute_times { app_name = this.lastAppName,  startTime = this.startTime, endTime = this.endTime };
-                // list2.Add(temp);
-                dbConnect.SaveItem(temp);
+            var temp = new t_texecute_times { app_name = this.lastAppName,  startTime = this.startTime, endTime = this.endTime };
+            dbConnect.SaveItem(temp);
 
-                this.startTime = "";
-                this.endTime = "";
-            }
+            this.startTime = "";
+            this.endTime = "";
         }
 
 
@@ -179,18 +163,18 @@ namespace ATL.Droid
             var app_name = "none";
             var event_name = UsageEventType.None;
 
-            UsageStatsManager usageStatsManager;
+            //Calendar endCal;
+            //endCal = Calendar.GetInstance(TimeZone.Default);
+            //endCal.Set(Calendar.Date, DateTime.Now.Day);
+            //endCal.Set(Calendar.Month, DateTime.Now.Month - 1);
+            //endCal.Set(Calendar.Year, DateTime.Now.Year);
 
-            Calendar endCal;
-            endCal = Calendar.GetInstance(TimeZone.Default);
-            endCal.Set(Calendar.Date, DateTime.Now.Day);
-            endCal.Set(Calendar.Month, DateTime.Now.Month - 1);
-            endCal.Set(Calendar.Year, DateTime.Now.Year);
-
-            usageStatsManager = (UsageStatsManager)_context.GetSystemService(UsageStatsService);
-            long time = endCal.TimeInMillis;
-            long interval = 2 * 1000;
+            var usageStatsManager = (UsageStatsManager)_context.GetSystemService(UsageStatsService);
+            long time = GetUnixTime(DateTime.Now) * 1000;
+            const long interval = 2 * 1000;
             UsageEvents events = usageStatsManager.QueryEvents(time - interval, time);
+
+
             while (events.HasNextEvent)
             {
                 var event1 = new UsageEvents.Event();
@@ -202,7 +186,6 @@ namespace ATL.Droid
             }
             MyStruct myStruct = new MyStruct(app_name, event_name);
 
-            // return (app_name,event_name);
             return myStruct;
         }
 
@@ -219,6 +202,20 @@ namespace ATL.Droid
 
         }
 
-        
+        // UNIXエポックを表すDateTimeオブジェクトを取得
+        private static DateTime UNIX_EPOCH =
+            new DateTime(1970, 1, 1, 0, 0, 0, 0);
+
+        public static long GetUnixTime(DateTime targetTime)
+        {
+            // UTC時間に変換
+            targetTime = targetTime.ToUniversalTime();
+
+            // UNIXエポックからの経過時間を取得
+            TimeSpan elapsedTime = targetTime - UNIX_EPOCH;
+
+            // 経過秒数に変換
+            return (long)elapsedTime.TotalSeconds;
+        }
     }
 }
