@@ -45,7 +45,7 @@ namespace ATL.Models
                 // app名 & ICON
                 var NameUrl = GetApplicationIconAndName.GetNameAndURL(v.Key);
                 t.app_name = NameUrl.appName;
-                t.icon_url = ImageSource.FromStream(() => new MemoryStream(NameUrl.iconUrl));
+                t.iconImage = ImageSource.FromStream(() => new MemoryStream(NameUrl.iconAsBytes));
 
                 var second = v.Sum(a => a.exeTimeSecond);
                 var ts = new TimeSpan(0, 0, second);

@@ -114,7 +114,7 @@ namespace ATL.ViewModels
             try
             {
                 this.IsBusy = true;
-                await Task.Delay(2000);
+                await Task.Delay(1800);
                 // ここが集計時期ごとに違う
                 var t = _model.GetMonthLists();
                 ExecuteTimesList = t;

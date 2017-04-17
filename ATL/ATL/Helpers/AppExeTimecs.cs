@@ -22,7 +22,7 @@ namespace ATL.Helpers
     public struct AppNameAndExecTime
     {
         public string app_name { get; set; }
-        public ImageSource icon_url { get; set; }
+        public ImageSource iconImage { get; set; }
         public string exeTimeSecond { get; set; }
     }
 }

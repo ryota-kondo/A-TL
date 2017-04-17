@@ -26,7 +26,7 @@
             <ListView ItemsSource="{Binding ExecuteTimesList}" Margin="10,5,0,0">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ImageCell Text="{Binding app_name}" Detail="{Binding exeTimeSecond, StringFormat='実行時間：{0}'}" ImageSource="{Binding icon_url}" />
+                        <ImageCell Text="{Binding app_name}" Detail="{Binding exeTimeSecond, StringFormat='実行時間：{0}'}" ImageSource="{Binding iconImage}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

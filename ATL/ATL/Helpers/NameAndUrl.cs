@@ -10,6 +10,6 @@ namespace ATL.Helpers
     public struct NameAndUrl
     {
         public string appName;
-        public byte[] iconUrl;
+        public byte[] iconAsBytes;
     }
 }

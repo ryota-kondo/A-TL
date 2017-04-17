@@ -40,7 +40,7 @@ namespace ATL.Droid
 
             var memoryStream = new MemoryStream();
             bitmap.Compress(Bitmap.CompressFormat.Png, 100, memoryStream);
-            appNameAndIcon.iconUrl = memoryStream.ToArray();
+            appNameAndIcon.iconAsBytes = memoryStream.ToArray();
             //----------
 
             return appNameAndIcon;
