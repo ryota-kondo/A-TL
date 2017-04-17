@@ -2,9 +2,11 @@
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace ATL.Models
 {
@@ -43,7 +45,7 @@ namespace ATL.Models
                 // app名 & ICON
                 var NameUrl = GetApplicationIconAndName.GetNameAndURL(v.Key);
                 t.app_name = NameUrl.appName;
-                t.icon_url = NameUrl.iconUrl;
+                t.iconImage = ImageSource.FromStream(() => new MemoryStream(NameUrl.iconAsBytes));
 
                 var second = v.Sum(a => a.exeTimeSecond);
                 var ts = new TimeSpan(0, 0, second);
