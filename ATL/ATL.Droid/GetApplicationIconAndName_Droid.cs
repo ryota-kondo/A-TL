@@ -31,17 +31,24 @@ namespace ATL.Droid
             var appList = packageManager.GetInstalledApplications(PackageInfoFlags.Activities);
 
             NameAndUrl appNameAndIcon;
-            appNameAndIcon.appName = appList.Where(b => b.PackageName == packageName).Select(a => a.LoadLabel(packageManager)).First();
+            
+            try
+            {
+                appNameAndIcon.appName = appList.Where(b => b.PackageName == packageName).Select(a => a.LoadLabel(packageManager)).First();
 
-            var applicationIcon = packageManager.GetApplicationIcon(packageName);
+                var applicationIcon = packageManager.GetApplicationIcon(packageName);
 
-            //----------------
-            var bitmap = drawableToBitmap(applicationIcon);
+                var bitmap = drawableToBitmap(applicationIcon);
 
-            var memoryStream = new MemoryStream();
-            bitmap.Compress(Bitmap.CompressFormat.Png, 100, memoryStream);
-            appNameAndIcon.iconAsBytes = memoryStream.ToArray();
-            //----------
+                var memoryStream = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, memoryStream);
+                appNameAndIcon.iconAsBytes = memoryStream.ToArray();
+            }
+            catch (Exception e)
+            {
+                appNameAndIcon.appName = packageName + "(çÌèúÇ≥ÇÍÇΩÉAÉvÉä)";
+                appNameAndIcon.iconAsBytes = new byte[1];
+            }
 
             return appNameAndIcon;
         }
